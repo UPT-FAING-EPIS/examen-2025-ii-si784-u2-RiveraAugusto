@@ -19,6 +19,8 @@ jobs:
         ls -la
         echo "Ejercicio 1 directory contents:"
         ls -la "Ejercicio 1/"
+        echo "Checking if solution file exists:"
+        ls -la "Ejercicio 1/TransportSolution.sln"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -26,22 +28,32 @@ jobs:
         dotnet-version: '9.0.x'
     
     - name: Restore dependencies
-      run: dotnet restore "Ejercicio 1/TransportSolution.sln"
+      run: |
+        cd "Ejercicio 1"
+        dotnet restore TransportSolution.sln
     
     - name: Build
-      run: dotnet build "Ejercicio 1/TransportSolution.sln" --no-restore
+      run: |
+        cd "Ejercicio 1"
+        dotnet build TransportSolution.sln --no-restore
     
     - name: Run Unit Tests
-      run: dotnet test "Ejercicio 1/TransportLib.Tests" --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory "Ejercicio 1/TestResults"
+      run: |
+        cd "Ejercicio 1"
+        dotnet test TransportLib.Tests --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
     
     - name: Run BDD Tests
-      run: dotnet test "Ejercicio 1/TransportLib.Specs" --no-build --verbosity normal
+      run: |
+        cd "Ejercicio 1"
+        dotnet test TransportLib.Specs --no-build --verbosity normal
     
     - name: Install ReportGenerator
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
     
     - name: Generate Coverage Report
-      run: reportgenerator -reports:"Ejercicio 1/TestResults/**/coverage.cobertura.xml" -targetdir:"Ejercicio 1/CoverageReport" -reporttypes:Html
+      run: |
+        cd "Ejercicio 1"
+        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./CoverageReport" -reporttypes:Html
     
     - name: Upload Coverage Report
       uses: actions/upload-artifact@v4
