@@ -13,46 +13,48 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Debug - List directory contents
+      run: |
+        echo "Root directory contents:"
+        ls -la
+        echo "Ejercicio 1 directory contents:"
+        ls -la "Ejercicio 1/"
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
     
     - name: Restore dependencies
-      run: dotnet restore TransportSolution.sln
-      working-directory: './Ejercicio 1'
+      run: dotnet restore "Ejercicio 1/TransportSolution.sln"
     
     - name: Build
-      run: dotnet build TransportSolution.sln --no-restore
-      working-directory: './Ejercicio 1'
+      run: dotnet build "Ejercicio 1/TransportSolution.sln" --no-restore
     
     - name: Run Unit Tests
-      run: dotnet test TransportLib.Tests --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
-      working-directory: './Ejercicio 1'
+      run: dotnet test "Ejercicio 1/TransportLib.Tests" --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory "Ejercicio 1/TestResults"
     
     - name: Run BDD Tests
-      run: dotnet test TransportLib.Specs --no-build --verbosity normal
-      working-directory: './Ejercicio 1'
+      run: dotnet test "Ejercicio 1/TransportLib.Specs" --no-build --verbosity normal
     
     - name: Install ReportGenerator
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
     
     - name: Generate Coverage Report
-      run: reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./CoverageReport" -reporttypes:Html
-      working-directory: './Ejercicio 1'
+      run: reportgenerator -reports:"Ejercicio 1/TestResults/**/coverage.cobertura.xml" -targetdir:"Ejercicio 1/CoverageReport" -reporttypes:Html
     
     - name: Upload Coverage Report
       uses: actions/upload-artifact@v4
       with:
         name: coverage-report
-        path: './Ejercicio 1/CoverageReport'
+        path: 'Ejercicio 1/CoverageReport'
     
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: './Ejercicio 1/CoverageReport'
+        publish_dir: 'Ejercicio 1/CoverageReport'
         destination_dir: coverage
     
     - name: Comment PR with Coverage
@@ -61,7 +63,7 @@ jobs:
       with:
         script: |
           const fs = require('fs');
-          const path = './Ejercicio 1/CoverageReport/index.html';
+          const path = 'Ejercicio 1/CoverageReport/index.html';
           if (fs.existsSync(path)) {
             const coverage = 'Coverage report generated successfully! 📊';
             github.rest.issues.createComment({
