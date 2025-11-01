@@ -1,0 +1,53 @@
+# .NET build artifacts
+bin/
+obj/
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Logs
+*.log
+
+# Coverage and test results
+TestResult*/
+coverage*
+*.coverage
+*.coveragexml
+*.opencover.xml
+
+# Playwright videos and artifacts
+UITests/bin/
+UITests/obj/
+UITests/bin/Release/net*/ui-videos/
+
+# Build outputs
+TransportLib/bin/
+TransportLib/obj/
+TransportLib.Tests/bin/
+TransportLib.Tests/obj/
+TransportLib.Specs/bin/
+TransportLib.Specs/obj/
+TransportApp/bin/
+TransportApp/obj/
+
+# Generated SpecFlow files
+**/*.feature.cs
